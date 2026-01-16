@@ -6,64 +6,76 @@ use serde_derive::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ListMultiStatus {
-    #[serde(rename = "response")]
+    #[serde(rename = "D:response", alias = "d:response")]
     pub responses: Vec<ListResponse>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ListResponse {
+    #[serde(rename = "D:href", alias = "d:href")]
     pub href: String,
-    #[serde(rename = "propstat")]
+    #[serde(rename = "D:propstat", alias = "d:propstat")]
     pub prop_stat: Vec<ListPropStat>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ListPropStat {
+    #[serde(rename = "D:status", alias = "d:status")]
     pub status: String,
+    #[serde(rename = "D:prop", alias = "d:prop")]
     pub prop: ListProp,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct ListResourceType {
+    #[serde(rename = "D:collection", alias = "d:collection")]
     pub collection: Option<()>,
-    #[serde(rename = "redirectref")]
+    #[serde(rename = "D:redirectref", alias = "d:redirectref")]
     pub redirect_ref: Option<()>,
     // TODO: Pretty sure this is in the wrong place.
-    #[serde(rename = "redirect-lifetime")]
+    #[serde(rename = "D:redirect-lifetime", alias = "d:redirect-lifetime")]
     pub redirect_lifetime: Option<()>,
-    #[serde(rename = "addressbook", default)]
+    #[serde(rename = "card:addressbook", default)]
     pub address_book: Option<()>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ListProp {
-    #[serde(rename = "getlastmodified", deserialize_with = "http_time", default)]
+    #[serde(
+        rename = "D:getlastmodified",
+        alias = "d:getlastmodified",
+        deserialize_with = "http_time",
+        default
+    )]
     pub last_modified: Option<DateTime<Utc>>,
-    #[serde(rename = "resourcetype", default)]
+    #[serde(rename = "D:resourcetype", alias = "d:resourcetype", default)]
     pub resource_type: ListResourceType,
     #[serde(
-        rename = "quota-used-bytes",
+        rename = "D:quota-used-bytes",
+        alias = "d:quota-used-bytes",
         deserialize_with = "empty_number",
         default
     )]
     pub quota_used_bytes: Option<i64>,
     #[serde(
-        rename = "quota-available-bytes",
+        rename = "D:quota-available-bytes",
+        alias = "d:quota-available-bytes",
         deserialize_with = "empty_number",
         default
     )]
     pub quota_available_bytes: Option<i64>,
-    #[serde(rename = "getetag")]
+    #[serde(rename = "D:getetag", alias = "d:getetag")]
     pub tag: Option<String>,
     #[serde(
-        rename = "getcontentlength",
+        rename = "D:getcontentlength",
+        alias = "d:getcontentlength",
         deserialize_with = "empty_number",
         default
     )]
     pub content_length: Option<i64>,
-    #[serde(rename = "getcontenttype")]
+    #[serde(rename = "D:getcontenttype", alias = "d:getcontenttype")]
     pub content_type: Option<String>,
-    #[serde(rename = "calendar-data")]
+    #[serde(rename = "cal:calendar-data")]
     pub calendar_data: Option<String>,
 }
 
